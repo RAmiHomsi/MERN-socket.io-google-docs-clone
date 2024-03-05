@@ -10,7 +10,7 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 //Create Instances & Make Server inside the package
 const io = require("socket.io")(3001, {
   cors: {
-    origin: "https://mern-socket-io-google-docs-clone.vercel.app/api",
+    origin: "https://mern-socket-io-google-docs-clone.vercel.app",
     methods: ["GET", "POST", "DELETE", "PUT"],
   },
 });

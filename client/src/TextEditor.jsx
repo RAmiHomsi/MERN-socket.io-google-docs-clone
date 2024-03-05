@@ -27,7 +27,7 @@ export default function TextEditor() {
 
   //connect to server
   useEffect(() => {
-    const s = io("https://mern-socket-io-google-docs-clone.vercel.app/api");
+    const s = io("https://mern-socket-io-google-docs-clone.vercel.app");
     setSocket(s);
 
     //unmount the connection after it is established
