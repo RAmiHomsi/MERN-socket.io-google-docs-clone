@@ -27,7 +27,8 @@ export default function TextEditor() {
 
   //connect to server
   useEffect(() => {
-    const s = io("https://mern-socket-io-google-docs-clone.vercel.app");
+    const socketUrl = import.meta.env.VITE_SOCKET_SERVER_URL;
+    const s = io(socketUrl);
     setSocket(s);
 
     //unmount the connection after it is established
