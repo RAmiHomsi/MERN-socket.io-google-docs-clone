@@ -6,23 +6,39 @@ require("dotenv").config();
 const path = require("path");
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect(process.env.MONGO_URL).then(() => {
   console.log("connected to db");
 });
 
+// --------------------------deployment------------------------------
+
 const __dirname1 = path.resolve();
-app.use(express.static(path.join(__dirname1, "/client/dist")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname1, "client", "dist", "index.html"));
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/client/dist")));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "client", "dist", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
+
+// --------------------------deployment------------------------------
+
+const PORT = process.env.PORT;
+const server = app.listen(
+  PORT,
+  console.log(`Server running on PORT ${PORT}...`)
+);
 
 //Create Instances & Make Server inside the package
-const io = require("socket.io")(3001, {
+const io = require("socket.io")(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT"],
