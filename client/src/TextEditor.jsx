@@ -27,7 +27,7 @@ export default function TextEditor() {
 
   //connect to server
   useEffect(() => {
-    const s = io("http://localhost:5000");
+    const s = io("https://rami-socket-io-google-docs-clone.onrender.com");
     setSocket(s);
 
     //unmount the connection after it is established
