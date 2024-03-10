@@ -1,16 +1,30 @@
 // 1. Import packages
+const express = require("express");
 const mongoose = require("mongoose");
 const Document = require("./Document");
 require("dotenv").config();
+const path = require("path");
+
+const app = express();
 
 mongoose.connect(process.env.MONGO_URL).then(() => {
   console.log("connected to db");
 });
 
+const __dirname1 = path.resolve();
+app.use(express.static(path.join(__dirname1, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname1, "client", "dist", "index.html"));
+});
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 //Create Instances & Make Server inside the package
 const io = require("socket.io")(3001, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT"],
   },
 });
